@@ -48,9 +48,15 @@ $$
 	- Cuantización: Discretiza el rango de la función. Determina el número de niveles de intensidad de luz (niveles de voltaje L)
 	- $L = 2^{8bits}=256$
 	- $$ MUESTRO + CUANTIZACION = IMAGEN DIGITAL$$
-- **Imagenes segun espectro electromagnético:**
-- Histograma
-- Acumulacion de la imagen
+- **Imagenes según espectro electromagnético:**
+- **Histograma:** Frecuencia de ocurrencia de las intensidades de grises en una imagen. Es un arreglo de largo 256 en donde cada casilla corresponde a una intensidad de luz, el numero de cada casilla son las ocurrencias de dicha tonalidad.
+- **Probabilidad de ocurrencia:** Probabilidad de que un pixel de cierta tonalidad esté en la imagen digital
+- $$p(x)=\dfrac{\text{ocurrencias de x}}{\text{nro pixeles}}$$
+- **Acumulacion de la imagen:**
+- $$H(\lambda) = \sum_{j=0}^{\lambda-1} h(j)$$
+- $H(\lambda):$ Frencuencia de aparicion de ciertos tonos de gris en la imagen menores que el tono $\lambda$ 
+- *Ejemplo: Si $H(135)=69$ en la imagen existen 69 pixels con un tono menor que 135*
+
 - Binarizacion, filtrado, deteccion de bordes, mejoramiento del contraste, morfología matemática y segmentación
 
 #### s2-cat1:
