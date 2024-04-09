@@ -135,12 +135,22 @@ $$
 	- Apertura = E + D (Puede eliminar objetos no deseados como "agujeros" en la imagen)
 	- Clausura = D + E (Puede completar objetos incompletos como "agujeros")
 	- *mnemotecnia: vocal con vocal, consonante con consonante*
-	- Dualidad
+	- Dualidad = Se utiliza de a dos *(como en slide 22)*
+	- ¿Cómo extraer bordes con morfología? 
+		- original-erosionado=borde
+		- dilatacion-imagen=borde externo
+		- dilatacion-erosion = borde morfologico
+	- Adelgazar->Erosion; Engrosar->Dilatacion
+	- Quitar Cachitos->Clausura
+	- Operaciones de M.M son muy rápidas
+	- Componentes convexos en lab s4
+	- (24) Borde morfológico
+	- (25) Buscar elemento mayor, quita puntos negros dentro de los main puntos blancos
+- **Morfología en tonos de gris:** Fondo oscuro~0 y objeto claro~255
+	- Si quiero ver un objeto claro y quiero expandirlo necesito que los pixels que lo rodeen se vuelvan mas claros
+	- Elemento Estructural: Vecindad
 	
-	- 
-- Morfología en tonos de gris
-- Objeyibo
-	- Dilatacion
+	- Dilatacion: 
 	- Erosion
 	- Apertura
 	- Clausura
