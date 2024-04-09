@@ -115,16 +115,31 @@ $$
 
 #### s4-cat1:
 
-- Morfología matemática
+- **Morfología matemática:** Simplificar/ destacar estructura de objetos en imagenes **conservando características de forma** GRAY->B&W
+
 - Usos de la MM
-- Elemento Estructural
-- Morfología Binaria
-	- Dilatacion Binaria
-	- Erosión Binaria
+
+- **Elemento Estructural:** Es una forma o nucleo que define la forma en que voy a procesar la foto. (4) Solo me interesan los pixels que están en gris y descarto los blancos "Extraigo objetos de la imagen"
+	- Diferentes nucleos implican diferentes resultados, mascaras de unos (me importan) y ceros (no me importan)
+	- (5) Busca representar discos de diferentes radios
+	- **Objetos:** Conjunto de pixels blancos en una imagen
+	- **Elemento estructural:** Conjunto de puntos que definen la forma del nucleo, puede contener elementos que no me importan (ceros)
+	
+- **Morfología Binaria**
+	- **Dilatacion Binaria:** Expandir una imagen usando un elemento estructural dado. (7) Cada vez que $\cdot$ (centro del elemento estructural) caiga en parte del objeto de la imagen lo voy a copiar completo.
+		- G comienza negra
+
+	- **Erosión Binaria:** Reducción de una imagen I usando un elemento estructural E. Cada vez que el ES quepa completo en el objeto copio **solo el centro del objeto** a la imagen de salida
+
+	- *La magia viene en elegir correctamente la forma y tamaño del elemento estructural*
+	- Apertura = E + D (Puede eliminar objetos no deseados como "agujeros" en la imagen)
+	- Clausura = D + E (Puede completar objetos incompletos como "agujeros")
+	- *mnemotecnia: vocal con vocal, consonante con consonante*
 	- Dualidad
-	- Apertura
-	- Clausura
+	
+	- 
 - Morfología en tonos de gris
+- Objeyibo
 	- Dilatacion
 	- Erosion
 	- Apertura
