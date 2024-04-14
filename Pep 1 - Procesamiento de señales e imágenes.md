@@ -70,11 +70,16 @@ $$
 - **Blending:** Se ponderan los pixeles de cada imagen $G(x) = \alpha \cdot I_1 + (1-\alpha)\cdot I_2(x)$
 
 - **Binarizacion(Thresholding):**
+
 	- Objetivo: Separar el objeto de interés del fondo de la imagen. Genera GRAY -> B&W
 	- 1 si supera umbral sino, 0
+	
 	- **Algoritmo de Otsu para binarizar:** Requiere o se parte desde el supuesto de que nuestra imagen tiene un histograma bimodal
+	
 		- **Objetivo:** Maximizar varianza entre clases
+		
 			- **Umbral:** valor que minimiza la dispersión intra-clase y maximiza la dispersion entre clases.
+			
 		- El algoritmo de Otsu es un método de umbralización automática que se basa en la variabilidad de los niveles de intensidad para separar una imagen en primer plano y fondo. Calcula el umbral que minimiza la varianza intraclase o maximiza la varianza entre clases asumiendo un histograma bimodal. La principal ventaja de Otsu es que no requiere intervención humana y es efectivo cuando hay una clara distinción entre los objetos y el fondo. Sin embargo, es sensible a las variaciones de iluminación y a las sombras, lo que puede resultar en un umbral menos óptimo cuando las condiciones de iluminación no son uniformes. Además, en histogramas con múltiples modas o ruido excesivo, su rendimiento puede disminuir significativamente, ya que su premisa se basa en la presencia de dos clases predominantes.
 	- **Isodata**
 	- **Binarizacion Adaptativa**: varianza y media local; niblack; savuola
@@ -94,7 +99,7 @@ $$
 #### s2-cat2:
 
 - **Filtrado Espacial**
-	- Objetivo: Acentuar o disminuir características mediante la convolución. Requiere una vecindad definida alrededor de un punto y una operación que se realice en tal vecindad
+	- **Objetivo:** Acentuar o disminuir características mediante la convolución. Requiere una vecindad definida alrededor de un punto y una operación que se realice en tal vecindad
 
 | Característica                    | Correlación $\otimes$                                                                  | Convolución $\circledast$                                                                                 |
 | --------------------------------- | -------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
@@ -119,24 +124,38 @@ $$
 - **Filtros Lineales de suavizamiento:**
 
 	- **Filtro Promedio (BOX FILTER):** Suma todos los pixels de la vecindad, promedia la suma y reemplaza el valor resultante en el pixel central. Ideal para ruido sal y pimienta.
+	
 	- **Filtro promedio ponderado:** Aplica un kernel cuyos valores varian espacialmente. Se pondera por el peso total del kernel
+	
 	- **Filtro Gaussiano:** Aplica un kernel que sigue una distribucion gaussiana y se pondera por el peso total del kernel.
+	
 	- **Filtro Promedio/Rango:** Promedia los pixels dentro del kernel que esten dentro de un rango determinado (El kernel va variando)
 
 - **Filtros Lineales de Realce:** Kernel debe tener valores positivos cerca del centro y negativos lejos de este
+
 	- **Filtro de Paso Alto:** El filtro de paso alto es un tipo de filtro que atenúa las bajas frecuencias y permite que las altas frecuencias pasen. En el contexto de las imágenes, las bajas frecuencias corresponden a áreas de cambio gradual en la intensidad (como regiones lisas o uniformes), mientras que las altas frecuencias corresponden a cambios abruptos (como bordes o detalles finos). El resultado de aplicar un filtro de paso alto es una imagen que tiene un aspecto más "nítido", con los bordes y detalles resaltados. 
+	
 	- $ORIGINAL = PASO\_ALTO + PASO\_BAJO$
+	
 		- **El procedimiento típico para aplicar un filtro de paso alto incluye:**
+		
 			- Definir un kernel que tenga valores positivos en el centro y negativos alrededor o viceversa, **asegurando que la suma de todos los valores sea cero o se acerque a cero**.
+			
 			- Convolucionar este kernel con la imagen.
+			
 			- Ajustar el resultado para evitar valores negativos de píxeles, generalmente sumando un valor constante o escalando el resultado.
+			
 	- **Filtro de Enfasis en Altas Frecuencias:** Este filtro es una variación del filtro de paso alto. No solo permite que pasen las altas frecuencias, sino que también las amplifica ($A$) para aumentar el contraste entre las áreas con altas frecuencias y el resto de la imagen. Este tipo de filtro puede diseñarse para controlar la cantidad de realce que se aplica a las altas frecuencias.
-	- $EAF = A \cdot ORIGINAL-PASO\_BAJO$
-	- $EAF = (A-1) \cdot ORIGINAL + PASO\_ALTO$
+	- $$EAF = A \cdot ORIGINAL-PASO\_BAJO$$
+	- $$EAF = (A-1) \cdot ORIGINAL + PASO\_ALTO$$
 		- **El proceso de aplicación de un filtro de énfasis en altas frecuencias podría ser:**
+		
 			- Crear un kernel que, además de tener un diseño de paso alto, incluye un término adicional que amplifica las frecuencias altas.
+			
 			- Aplicar este kernel mediante convolución a la imagen.
+			
 			- Al igual que con el filtro de paso alto, realizar ajustes en la imagen resultante para asegurar que los valores de los píxeles son válidos.
+			
 	- *Una consecuencia de su aplicación es que también pueden realzar el ruido, por lo que a veces se utilizan en combinación con técnicas de suavizado para contrarrestar este efecto.*
 
 - **Filtros NO lineales:**
@@ -151,22 +170,67 @@ $$
 #### s3-cat1:
 
 - **Deteccion de bordes:** Identificar cambios repentinos o discontinuidades en una imagen $GRAY \rightarrow GRAY$ 
+
 	- Se generan por discontinuidad de la normal de la superficie, de profundidad, de color, de iluminación.
 
 - **Caracterizacion de un borde:** Un borde se detecta en el lugar de *rápido* cambio de intensidad den la imagen -> derivada 
 	
 	- **Gradiente de una imagen:**  $\nabla I = [g_x,g_y]^T = [\frac{\partial I}{\partial x},\frac{\partial I}{\partial y}]^T$
+	
 	- **Magnitud del gradiente:** $mag(\nabla I) = \sqrt{g_x^2+g_y^2} \approx |g_x|+|g_y|$
+	
 	- **Angulo del gradiente:** $\alpha(x,y) = \tan^{-1}[\frac{g_y}{g_x}]$
+	
 	- *Dirección del cambio (gradiente) es perpendicular al borde* 
-	- **Derivada parcial discretizada:** $\frac{\partial f(x,y)}{\partial x} \approx \frac{f(x+1,y)-f(x+y)}{1}$
-	- Se puede resumir la detección de bordes en la convolución de una imagen con determinados kernels que aproximan las derivadas parciales en las direcciones horizontal y vertical
-		- Como ejempl
-- Operadores de primer orden:
-	- Operador de Roberts
-	- Operador de Prewitt
-	- Operador de Sobel
-	- Método de Canny (histéresis?)
+	
+	- **Derivada parcial discretizada:** $$\frac{\partial f(x,y)}{\partial x} \approx \frac{f(x+1,y)-f(x+y)}{1}$$
+		- $G_x = 0 \cdot (x-1,y) + (-1) \cdot I(x,y) + 1 \cdot I(x+1,y)$
+		- $G_y = 0 \cdot (x,y-1) + (-1) \cdot I(x,y) + 1 \cdot I(x,y+1)$
+		
+		- Se puede resumir la detección de bordes en la convolución de una imagen con determinados kernels que aproximan las derivadas parciales en las direcciones horizontal y vertical
+	
+		- **Kernel en Gx:** $$G_x = [0,-1,1]$$
+		- **Kernel en Gy:** $$G_y = [0,-1,1]^T$$
+		- **Luego la imagen G resulta como:** $$mag(\nabla I) = \sqrt{g_x^2+g_y^2} \approx |g_x|+|g_y|$$
+		- *G tiene los bordes en blanco por lo que se puede aplicar un negativo para dejar los bordes negros y lo demás blanco*
+	
+- ### Operadores de primer orden:
+
+	- #### Operador de Roberts:
+	
+		- **Características**: Utiliza cálculo de diferencias diagonales para estimar la magnitud del gradiente en una imagen. Se caracteriza por ser especialmente sensible a bordes diagonales.
+		
+		- **Kernels:**
+			- $$ G_x = \begin{bmatrix} +1 & 0 \\ 0 & -1 \end{bmatrix} $$
+			- $$ G_y = \begin{bmatrix} 0 & +1 \\ -1 & 0 \end{bmatrix} $$
+		- **Aplicación**: Convoluciona estos kernels con la imagen para detectar cambios en la diagonal. Es menos robusto al ruido y generalmente produce bordes menos definidos en comparación con otros operadores más modernos.
+		- **Observaciones:** 
+			- Pocos pixeles en la vecindad -> **muy sensible al ruido**
+			- Máscara de 2x2 -> aproximación de $(i,j)$ en $(i+1/2$,$j+1/2)$
+
+	- #### Operador de Prewitt:
+	
+		- **Características**: Similar al operador de Sobel, pero utiliza pesos uniformes en sus kernels, lo que le confiere menos sensibilidad a las variaciones de dirección en los bordes.
+		
+		- **Kernels**:
+			- $$ G_x = \begin{bmatrix} -1 & 0 & 1 \\ -1 & 0 & 1 \\ -1 & 0 & 1 \end{bmatrix} $$
+			  - $$ G_y = \begin{bmatrix} -1 & -1 & -1 \\ 0 & 0 & 0 \\ 1 & 1 & 1 \end{bmatrix} $$
+		- **Aplicación**: Se utiliza para detectar bordes verticales y horizontales, siendo útil en imágenes donde los bordes son más rectos y menos variados.
+		
+		- **Observaciones:** Menos sensible al ruido en comparación con Roberts
+
+	- #### Operador de Sobel
+	
+		- **Características**: Proporciona una mayor ponderación a los píxeles centrales de la región siendo evaluada, lo que resulta en una mayor precisión en la detección de bordes comparado con Prewitt y Roberts.
+		
+		- **Kernels**:
+			- $$ G_x = \begin{bmatrix} -1 & 0 & 1 \\ -2 & 0 & 2 \\ -1 & 0 & 1 \end{bmatrix} $$
+			- $$ G_y = \begin{bmatrix} -1 & -2 & -1 \\ 0 & 0 & 0 \\ 1 & 2 & 1 \end{bmatrix} $$
+		- **Aplicación**: Sobel es ampliamente utilizado debido a su efectividad en resaltar tanto bordes verticales como horizontales en presencia de ruido. Es uno de los métodos preferidos para tareas de detección de bordes en imágenes en muchos campos, incluidos el médico y el industrial.
+		
+		- **Observaciones:** Sobel tiende a producir bordes más gruesos y precisos.
+
+	- #### Método de Canny (histéresis?)
 - Operadores de segundo orden:
 	- Zero-Crossing?
 	- Operador Laplaciano
