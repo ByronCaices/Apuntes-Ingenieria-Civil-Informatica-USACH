@@ -61,11 +61,35 @@ $$
 
 #### s2-cat1:
 
-- Operaciones T
-- Operaciones de punto: Negativo, Blending, Binarizacion*
-- Algoritmo de Otsu para binarizar
-- Isodata
-- Binarizacion Adaptativa
+**Operaciones T:** Operaciones sobre una imagen I que permiten generar otra imagen G procesando los pixeles de I (Puntual, Local Global)
+
+- ##### Operaciones de punto: Negativo, Blending, Binarizacion
+
+-  **Negativo:**  $G(x) = M - I(x)$ con $M=255$ (o máximo del espectro)
+
+- **Blending:** Se ponderan los pixeles de cada imagen $G(x) = \alpha \cdot I_1 + (1-\alpha)\cdot I_2(x)$
+
+- **Binarizacion(Thresholding):**
+	- Objetivo: Separar el objeto de interés del fondo de la imagen. Genera GRAY -> B&W
+	- 1 si supera umbral sino, 0
+	- **Algoritmo de Otsu para binarizar:** Requiere o se parte desde el supuesto de que nuestra imagen tiene un histograma bimodal
+		- **Objetivo:** Maximizar varianza entre clases
+			- **Umbral:** valor que minimiza la dispersión intra-clase y maximiza la dispersion entre clases.
+		- El algoritmo de Otsu es un método de umbralización automática que se basa en la variabilidad de los niveles de intensidad para separar una imagen en primer plano y fondo. Calcula el umbral que minimiza la varianza intraclase o maximiza la varianza entre clases asumiendo un histograma bimodal. La principal ventaja de Otsu es que no requiere intervención humana y es efectivo cuando hay una clara distinción entre los objetos y el fondo. Sin embargo, es sensible a las variaciones de iluminación y a las sombras, lo que puede resultar en un umbral menos óptimo cuando las condiciones de iluminación no son uniformes. Además, en histogramas con múltiples modas o ruido excesivo, su rendimiento puede disminuir significativamente, ya que su premisa se basa en la presencia de dos clases predominantes.
+	- **Isodata**
+	- **Binarizacion Adaptativa**: varianza y media local; niblack; savuola
+
+| Característica              | Otsu                           | ISODATA                        | Binarización Adaptativa         |
+|-----------------------------|--------------------------------|--------------------------------|---------------------------------|
+| **Principio**               | Maximizar la varianza entre clases | Iterativo, busca el umbral que minimiza la varianza dentro de cada clase | Umbral local en función de las condiciones de la vecindad |
+| **Tipo de umbral**          | Global                         | Global                         | Local                           |
+| **Selección del umbral**    | Automática                     | Automática, inicialmente puede ser manual | Automática                      |
+| **Histograma**              | Bimodal                        | Puede manejar más de dos modas | No se basa en el histograma     |
+| **Sensibilidad a la luz**   | Sensible a variaciones globales | Menos sensible que Otsu, pero todavía afectado por condiciones de iluminación no uniformes | Alta adaptabilidad a variaciones de luz |
+| **Ruido**                   | Sensible al ruido              | Moderadamente sensible al ruido| Resistente al ruido local       |
+| **Velocidad**               | Rápido                         | Más lento que Otsu debido a la iteración | Variable, depende del tamaño de la ventana de análisis |
+| **Aplicaciones típicas**    | Imágenes con buena separación de fondo y objeto | Imágenes con variaciones de intensidad y posiblemente múltiples modos | Imágenes con iluminación no uniforme o variabilidad de fondo |
+| **Complejidad computacional** | Baja                          | Moderada                       | Alta (dependiendo del método de cálculo del umbral adaptativo) |
 
 #### s2-cat2:
 
@@ -154,3 +178,5 @@ $$
 	- Erosion
 	- Apertura
 	- Clausura
+
+
