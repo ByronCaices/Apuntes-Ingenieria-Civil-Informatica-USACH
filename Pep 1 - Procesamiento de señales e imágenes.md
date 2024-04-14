@@ -130,7 +130,7 @@ $$
 			- Definir un kernel que tenga valores positivos en el centro y negativos alrededor o viceversa, **asegurando que la suma de todos los valores sea cero o se acerque a cero**.
 			- Convolucionar este kernel con la imagen.
 			- Ajustar el resultado para evitar valores negativos de píxeles, generalmente sumando un valor constante o escalando el resultado.
-	- **Filtro de Enfasis en Altas Frecuencias:** Este filtro es una variación del filtro de paso alto. No solo permite que pasen las altas frecuencias, sino que también las amplifica para aumentar el contraste entre las áreas con altas frecuencias y el resto de la imagen. Este tipo de filtro puede diseñarse para controlar la cantidad de realce que se aplica a las altas frecuencias.
+	- **Filtro de Enfasis en Altas Frecuencias:** Este filtro es una variación del filtro de paso alto. No solo permite que pasen las altas frecuencias, sino que también las amplifica ($A$) para aumentar el contraste entre las áreas con altas frecuencias y el resto de la imagen. Este tipo de filtro puede diseñarse para controlar la cantidad de realce que se aplica a las altas frecuencias.
 	- $EAF = A \cdot ORIGINAL-PASO\_BAJO$
 	- $EAF = (A-1) \cdot ORIGINAL + PASO\_ALTO$
 		- **El proceso de aplicación de un filtro de énfasis en altas frecuencias podría ser:**
@@ -150,10 +150,18 @@ $$
 
 #### s3-cat1:
 
-- Deteccion de bordes
-- Caracterizacion de un borde
-- Gradiente de una imagen
-- Magnitud y angulo del gradiente
+- **Deteccion de bordes:** Identificar cambios repentinos o discontinuidades en una imagen $GRAY \rightarrow GRAY$ 
+	- Se generan por discontinuidad de la normal de la superficie, de profundidad, de color, de iluminación.
+
+- **Caracterizacion de un borde:** Un borde se detecta en el lugar de *rápido* cambio de intensidad den la imagen -> derivada 
+	
+	- **Gradiente de una imagen:**  $\nabla I = [g_x,g_y]^T = [\frac{\partial I}{\partial x},\frac{\partial I}{\partial y}]^T$
+	- **Magnitud del gradiente:** $mag(\nabla I) = \sqrt{g_x^2+g_y^2} \approx |g_x|+|g_y|$
+	- **Angulo del gradiente:** $\alpha(x,y) = \tan^{-1}[\frac{g_y}{g_x}]$
+	- *Dirección del cambio (gradiente) es perpendicular al borde* 
+	- **Derivada parcial discretizada:** $\frac{\partial f(x,y)}{\partial x} \approx \frac{f(x+1,y)-f(x+y)}{1}$
+	- Se puede resumir la detección de bordes en la convolución de una imagen con determinados kernels que aproximan las derivadas parciales en las direcciones horizontal y vertical
+		- Como ejempl
 - Operadores de primer orden:
 	- Operador de Roberts
 	- Operador de Prewitt
