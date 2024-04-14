@@ -79,38 +79,74 @@ $$
 	- **Isodata**
 	- **Binarizacion Adaptativa**: varianza y media local; niblack; savuola
 
-| Característica              | Otsu                           | ISODATA                        | Binarización Adaptativa         |
-|-----------------------------|--------------------------------|--------------------------------|---------------------------------|
-| **Principio**               | Maximizar la varianza entre clases | Iterativo, busca el umbral que minimiza la varianza dentro de cada clase | Umbral local en función de las condiciones de la vecindad |
-| **Tipo de umbral**          | Global                         | Global                         | Local                           |
-| **Selección del umbral**    | Automática                     | Automática, inicialmente puede ser manual | Automática                      |
-| **Histograma**              | Bimodal                        | Puede manejar más de dos modas | No se basa en el histograma     |
-| **Sensibilidad a la luz**   | Sensible a variaciones globales | Menos sensible que Otsu, pero todavía afectado por condiciones de iluminación no uniformes | Alta adaptabilidad a variaciones de luz |
-| **Ruido**                   | Sensible al ruido              | Moderadamente sensible al ruido| Resistente al ruido local       |
-| **Velocidad**               | Rápido                         | Más lento que Otsu debido a la iteración | Variable, depende del tamaño de la ventana de análisis |
-| **Aplicaciones típicas**    | Imágenes con buena separación de fondo y objeto | Imágenes con variaciones de intensidad y posiblemente múltiples modos | Imágenes con iluminación no uniforme o variabilidad de fondo |
-| **Complejidad computacional** | Baja                          | Moderada                       | Alta (dependiendo del método de cálculo del umbral adaptativo) |
+| Característica                | Otsu                                            | ISODATA                                                                                    | Binarización Adaptativa                                        |
+| ----------------------------- | ----------------------------------------------- | ------------------------------------------------------------------------------------------ | -------------------------------------------------------------- |
+| **Principio**                 | Maximizar la varianza entre clases              | Iterativo, busca el umbral que minimiza la varianza dentro de cada clase                   | Umbral local en función de las condiciones de la vecindad      |
+| **Tipo de umbral**            | Global                                          | Global                                                                                     | Local                                                          |
+| **Selección del umbral**      | Automática                                      | Automática, inicialmente puede ser manual                                                  | Automática                                                     |
+| **Histograma**                | Bimodal                                         | Puede manejar más de dos modas                                                             | No se basa en el histograma                                    |
+| **Sensibilidad a la luz**     | Sensible a variaciones globales                 | Menos sensible que Otsu, pero todavía afectado por condiciones de iluminación no uniformes | Alta adaptabilidad a variaciones de luz                        |
+| **Ruido**                     | Sensible al ruido                               | Moderadamente sensible al ruido                                                            | Resistente al ruido local                                      |
+| **Velocidad**                 | Rápido                                          | Más lento que Otsu debido a la iteración                                                   | Variable, depende del tamaño de la ventana de análisis         |
+| **Aplicaciones típicas**      | Imágenes con buena separación de fondo y objeto | Imágenes con variaciones de intensidad y posiblemente múltiples modos                      | Imágenes con iluminación no uniforme o variabilidad de fondo   |
+| **Complejidad computacional** | Baja                                            | Moderada                                                                                   | Alta (dependiendo del método de cálculo del umbral adaptativo) |
 
 #### s2-cat2:
 
-- Filtrado Espacial
-- Filtros Lineales
-- Nucleo de Convolucion (Máscara, kernel)
-- Convolucion y correlación
-- Propiedades de la convolución
-- Filtros de Suavizamiento
-- Ruidos: Sal-pimienta, de impulso y gaussiano
-- Filtros Lineales de suavizamiento:
-	-  Filtro Promedio (BOX FILTER)
-	- Filtro promedio ponderado
-	- Filtro Gaussiano
-	- Filtro Promedio/Rango
-- Filtros Lineales de realce:
-	- Filtros de paso alto
-	- Filtro de enfases en altas frecuencias
-- Filtros NO lineales:
+- **Filtrado Espacial**
+	- Objetivo: Acentuar o disminuir características mediante la convolución. Requiere una vecindad definida alrededor de un punto y una operación que se realice en tal vecindad
+
+| Característica                    | Correlación $\otimes$                                                                  | Convolución $\circledast$                                                                                 |
+| --------------------------------- | -------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| **Definición**                    | Medida de similitud entre dos señales.                                                 | Operación matemática que combina dos funciones para formar una tercera función.                           |
+| **Rotación de Kernel**            | No se rota el kernel antes de aplicarlo.                                               | El kernel se rota 180 grados antes de aplicarlo.                                                          |
+| **Propósito en Imágenes**         | Comúnmente usada para coincidencia de patrones y detección de características.         | Utilizada para aplicar efectos como desenfoque, realce de bordes, entre otros.                            |
+| **Resultado**                     | Alto cuando hay un fuerte parecido entre el kernel y la imagen en la región analizada. | El resultado depende de cómo el kernel modifica la región subyacente de la imagen.                        |
+| **Uso en Aprendizaje Automático** | Menos común, pero puede usarse para comparar características.                          | Fundamental en redes neuronales convolucionales para aprendizaje de características.                      |
+| **Invarianza**                    | Directamente dependiente de la forma del kernel y la señal de entrada.                 | Propiedad de invarianza espacial (las características se detectan independientemente de donde aparezcan). |
+| **Simetría**                      | La operación es directa, sin cambios en la orientación del kernel.                     | Incorpora una simetría debido a la rotación del kernel.                                                   |
+| **Enfoque**                       | Coincidencia directa y comparación de señales.                                         | Filtrado y transformación de señales.                                                                     |
+
+- **Obs:** Si el filtro es simétrico tanto correlación como convolución generan el mismo resultado
+- **Filtrado en extremos:** Existen alternativas como agregar un valor constante $k$ en los bordes del kernel que salgan de la imagen, replicar el borde de la imagen $xxy$, reflejar el borde de la imagen $xyx$, "envolver" los bordes de la imagen $zxxy..z$
+
+- **Propiedades de la convolución:** Conmutativa, Asociativa, Linealidad
+
+- **Filtros de Suavizamiento:** Permiten eliminar detalles y reducir ruido en imágenes
+
+- **Ruidos:** Sal-pimienta (b&w), de impulso (w) y gaussiano (gray)
+
+- **Filtros Lineales de suavizamiento:**
+
+	- **Filtro Promedio (BOX FILTER):** Suma todos los pixels de la vecindad, promedia la suma y reemplaza el valor resultante en el pixel central. Ideal para ruido sal y pimienta.
+	- **Filtro promedio ponderado:** Aplica un kernel cuyos valores varian espacialmente. Se pondera por el peso total del kernel
+	- **Filtro Gaussiano:** Aplica un kernel que sigue una distribucion gaussiana y se pondera por el peso total del kernel.
+	- **Filtro Promedio/Rango:** Promedia los pixels dentro del kernel que esten dentro de un rango determinado (El kernel va variando)
+
+- **Filtros Lineales de Realce:** Kernel debe tener valores positivos cerca del centro y negativos lejos de este
+	- **Filtro de Paso Alto:** El filtro de paso alto es un tipo de filtro que atenúa las bajas frecuencias y permite que las altas frecuencias pasen. En el contexto de las imágenes, las bajas frecuencias corresponden a áreas de cambio gradual en la intensidad (como regiones lisas o uniformes), mientras que las altas frecuencias corresponden a cambios abruptos (como bordes o detalles finos). El resultado de aplicar un filtro de paso alto es una imagen que tiene un aspecto más "nítido", con los bordes y detalles resaltados. 
+	- $ORIGINAL = PASO\_ALTO + PASO\_BAJO$
+		- **El procedimiento típico para aplicar un filtro de paso alto incluye:**
+			- Definir un kernel que tenga valores positivos en el centro y negativos alrededor o viceversa, **asegurando que la suma de todos los valores sea cero o se acerque a cero**.
+			- Convolucionar este kernel con la imagen.
+			- Ajustar el resultado para evitar valores negativos de píxeles, generalmente sumando un valor constante o escalando el resultado.
+	- **Filtro de Enfasis en Altas Frecuencias:** Este filtro es una variación del filtro de paso alto. No solo permite que pasen las altas frecuencias, sino que también las amplifica para aumentar el contraste entre las áreas con altas frecuencias y el resto de la imagen. Este tipo de filtro puede diseñarse para controlar la cantidad de realce que se aplica a las altas frecuencias.
+	- $EAF = A \cdot ORIGINAL-PASO\_BAJO$
+	- $EAF = (A-1) \cdot ORIGINAL + PASO\_ALTO$
+		- **El proceso de aplicación de un filtro de énfasis en altas frecuencias podría ser:**
+			- Crear un kernel que, además de tener un diseño de paso alto, incluye un término adicional que amplifica las frecuencias altas.
+			- Aplicar este kernel mediante convolución a la imagen.
+			- Al igual que con el filtro de paso alto, realizar ajustes en la imagen resultante para asegurar que los valores de los píxeles son válidos.
+	- *Una consecuencia de su aplicación es que también pueden realzar el ruido, por lo que a veces se utilizan en combinación con técnicas de suavizado para contrarrestar este efecto.*
+
+- **Filtros NO lineales:**
 	- Filtro mediana
 	- Difusion anisotrópica
+
+| Filtro                | Descripción y Funcionamiento                                                                                                                                                       | Eficacia contra Ruido Sal-Pimienta | Eficacia contra Ruido Gaussiano | Eficacia contra Ruido de Impulso |
+|-----------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------|---------------------------------|----------------------------------|
+| Mediana               | Reemplaza cada píxel por la mediana de su vecindad. Ordena los valores de intensidad dentro de una ventana y utiliza el valor mediano para suavizar la imagen.                        | Muy alta. Elimina eficazmente valores extremos. | Moderada. Puede suavizar pero hay filtros más adecuados. | Muy alta. Similar a la eficacia con ruido sal-pimienta. |
+| Difusión Anisotrópica | Difunde los valores de píxeles basándose en un tensor de difusión que limita la difusión en los bordes. Permite más difusión en áreas homogéneas y menos en zonas con altos gradientes. | Alta. Limita la difusión alrededor de píxeles extremos preservando bordes. | Alta. Suaviza áreas homogéneas mientras preserva los bordes. | Alta. Restringe la difusión en áreas con altos gradientes. |
 
 #### s3-cat1:
 
