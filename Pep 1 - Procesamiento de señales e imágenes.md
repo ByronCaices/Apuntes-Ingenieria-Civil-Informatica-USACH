@@ -222,6 +222,7 @@ $$
 	- #### Operador de Sobel
 	
 		- **Características**: Proporciona una mayor ponderación a los píxeles centrales de la región siendo evaluada, lo que resulta en una mayor precisión en la detección de bordes comparado con Prewitt y Roberts.
+		- *Sobel=prewitt+f.gaussiano?*
 		
 		- **Kernels**:
 			- $$ G_x = \begin{bmatrix} -1 & 0 & 1 \\ -2 & 0 & 2 \\ -1 & 0 & 1 \end{bmatrix} $$
@@ -231,12 +232,62 @@ $$
 		- **Observaciones:** Sobel tiende a producir bordes más gruesos y precisos.
 
 	- #### Método de Canny (histéresis?)
-- Operadores de segundo orden:
-	- Zero-Crossing?
-	- Operador Laplaciano
-	- Laplaciano de Gaussiano
-	- Operadores de Kirsch
+		1. **Detección Óptima:** Reducir respuesta al ruido -> Suavizado para reducir el ruido y variaciones de intensidad que pueden llevar a detecciones falsas.
+		2. **Buena localización:** Aplicacion del operador de Sobel para determinar potenciales bordes
+		3. **Respuesta única:** 
+			1. **Supresión de No-Máximos**: Este paso implica la revisión de la imagen para asegurarse de que solo se conserven los máximos locales en la magnitud del gradiente de la imagen, lo cual es esencial para la "buena localización" del borde. Cualquier píxel que no sea un máximo local (es decir, si su magnitud no es mayor que la de sus vecinos en la dirección del gradiente) se suprime, lo que reduce potencialmente el grosor de los bordes a un píxel.
+    
+			2. **Histéresis**: Este proceso se refiere a la decisión de qué bordes son verdaderamente significativos basados en dos umbrales de magnitud del gradiente, denominados TH_HIGH (umbral alto) y TH_LOW (umbral bajo), y se realiza en tres pasos:
+    
+			    - **Fuerte**: Si la magnitud del gradiente en un píxel es mayor que el umbral alto (TH_HIGH), entonces el píxel se considera como parte de un borde fuerte.
+			    - **Débil**: Si la magnitud del gradiente está entre los dos umbrales (TH_LOW y TH_HIGH), el píxel se considera como parte de un borde débil.
+			    - **No Borde**: Si la magnitud del gradiente es menor que el umbral bajo (TH_LOW), el píxel no se considera como parte de un borde.
+			1. **Conexión de Bordes Débiles y Fuertes**: Un borde débil se considera válido y se convierte en fuerte si está conectado a un borde fuerte, lo que significa que se puede trazar una línea de píxeles de borde fuerte hasta el borde débil en cuestión. Esto asegura que los bordes continuos no se interrumpan por fluctuaciones menores en la intensidad del gradiente.
+    
+			1. **Definición del Borde Final**: Los bordes finales se definen por los puntos fuertes, ya sean aquellos identificados directamente por superar el umbral alto o aquellos bordes débiles que están conectados a ellos. Esto garantiza que los bordes en la imagen final sean claros y representen con precisión las formas reales en la imagen.
 
+### Operadores de segundo orden:
+- #### Zero-Crossing
+	- **Descripción**: Se basa en encontrar los cambios de signo en los valores de la imagen que indican la presencia de un borde. Típicamente, esto se utiliza después de aplicar un filtro que resalta las áreas donde se esperan cambios de intensidad, como el Laplaciano de Gaussiano.
+	- **Kernel**: No utiliza un kernel específico por sí mismo, pero se aplica después de usar un operador que produce una salida donde los cruces por cero son significativos.
+
+- #### Operador Laplaciano
+	- **Descripción**: Es un operador de segundo orden que mide la segunda derivada de la imagen, capturando regiones donde hay una rápida transición de intensidades. Es isotrópico, reaccionando igualmente a bordes de todas las orientaciones.
+	- **Kernel**: El Laplaciano puede tener varias formas, pero un ejemplo común es:
+	- $$
+  \begin{bmatrix}
+  0 & 1 & 0 \\
+  1 & -4 & 1 \\
+  0 & 1 & 0
+  \end{bmatrix}
+  $$
+  o, para tomar en cuenta las diagonales:
+	- $$
+  \begin{bmatrix}
+  1 & 1 & 1 \\
+  1 & -8 & 1 \\
+  1 & 1 & 1
+  \end{bmatrix}
+  $$
+
+- #### Laplaciano de Gaussiano (LoG)
+
+	- **Descripción**: Este operador combina la detección de bordes del Laplaciano con el suavizado del filtro Gaussiano. El filtro Gaussiano se aplica primero para reducir el ruido y luego se aplica el Laplaciano para detectar los bordes.
+	- **Kernel**: El LoG tiene un kernel que es la convolución de un Laplaciano con un Gaussiano, y su forma depende del tamaño del filtro y la desviación estándar del Gaussiano. No tiene una forma fija, ya que el filtro Gaussiano varía.
+
+- #### Operadores de Kirsch
+	- **Descripción**: Son un conjunto de 8 posibles convoluciones que responden a bordes en diferentes orientaciones. Se basan en la detección de máximos en la dirección del gradiente.
+	- **Kernels**: Cada uno de los 8 kernels de Kirsch detecta bordes en una dirección diferente. Por ejemplo, uno de ellos es en cero grados es:
+	- $$
+  \begin{bmatrix}
+  -1 & -1 & -1 \\
+  0 & 0 & 0 \\
+  1 & 1 & 1
+  \end{bmatrix}
+  $$
+  Se rotan estos pesos para crear los 4 kernels, cada uno enfocándose en una orientación específica (Norte, Sur, Este, Oeste)
+
+- Los operadores de segundo orden suelen ser más sensibles al ruido en comparación con los operadores de primer orden (como Sobel o Prewitt), por lo que el preprocesamiento con suavizado es comúnmente utilizado antes de aplicarlos. Los resultados de estos operadores no solo indican la presencia de un borde, sino también la naturaleza de la transición en intensidad en el borde, lo que puede ser beneficioso para ciertas aplicaciones que requieren una comprensión más detallada de la estructura de los bordes en la imagen.
 #### s3-cat2:
 
 - Mejoramiento del contraste
