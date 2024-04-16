@@ -44,6 +44,11 @@ GRAY = 0.299\cdot RED + 0.587 \cdot GREEN + 0.114 \cdot BLUE
 $$
 - **Muestreo y Cuantizacion:**
 
+	
+	- ￼￼Angulo del gradiente:￼￼ ￼
+ 
+￼
+	
 	- Muestreo:  Discretiza el dominio de la función imagen. Define número de filas M y columnas N de la grilla. La interseccion se conoce como PIXEL (picture element)
 	- Cuantización: Discretiza el rango de la función. Determina el número de niveles de intensidad de luz (niveles de voltaje L)
 	- $L = 2^{8bits}=256$
@@ -55,7 +60,17 @@ $$
 - **Acumulacion de la imagen:**
 - $$H(\lambda) = \sum_{j=0}^{\lambda-1} h(j)$$
 - $H(\lambda):$ Frencuencia de aparicion de ciertos tonos de gris en la imagen menores que el tono $\lambda$ 
-- *Ejemplo: Si $H(135)=69$ en la imagen existen 69 pixels con un tono menor que 135*
+- *Ejemplo: Si $H(135)=69$ en la imagen existen 69 pixels con un tono menor que 135
+```
+histograma_acumulado histogramaAcumulado(imagen I):
+	histA = crearArreglo(256)
+	hist = histograma(I)
+	histA[0] = hist[0]
+	para j = 1 hasta largo(hist)-1:
+		histA[j] = histA[j-1] + hist[j-1]
+	retornar histA
+```
+- 
 
 - Binarizacion, filtrado, deteccion de bordes, mejoramiento del contraste, morfología matemática y segmentación
 
