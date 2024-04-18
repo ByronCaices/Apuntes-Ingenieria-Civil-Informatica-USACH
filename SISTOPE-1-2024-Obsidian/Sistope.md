@@ -70,10 +70,52 @@ MPPAL: Memoria principal
 	    
 	
 	- En resumen, tanto las interrupciones como las excepciones son fundamentales para el manejo de eventos en sistemas informáticos, pero difieren en su origen, sincronicidad y manejo por parte del sistema operativo. Las excepciones son más específicas para el contexto de la ejecución del programa, mientras que las interrupciones pueden ser más generales y originarse externamente.
+	- ### Manejador de Interrupciones:
+		- El manejador de interrupciones es una función específica o un conjunto de funciones dentro del sistema operativo diseñadas para procesar interrupciones. Cuando una interrupción ocurre, el hardware del sistema pausa la ejecución del programa actual y transfiere el control al manejador de interrupciones apropiado. Este manejador es responsable de determinar la causa de la interrupción, ejecutar el código necesario para atender esta interrupción y luego retornar el control al programa que estaba en ejecución o a otro programa, según la planificación del sistema operativo.
 
 
+# 2. Procesos
 
-# Planificadores
+- ### PCB - Process Control Block:
+	- es una estructura de datos esencial en sistemas operativos que se utiliza para almacenar toda la información necesaria para gestionar un proceso específico. Cada proceso en el sistema tiene asociado un PCB, que es utilizado por el sistema operativo para mantener el seguimiento de los procesos a medida que cambian de estado, por ejemplo, de ejecución a espera o terminado.
+	
+	1. **Identificador (PID - Process ID)**: Es un número único asignado a cada proceso para identificarlo de manera unívoca dentro del sistema. El PID es crucial para operaciones como la asignación de recursos, manejo de prioridades, y seguimiento de la actividad del proceso.
+	    
+	2. **Estado del Proceso**: Indica el estado actual del proceso. Los estados comunes incluyen listo (ready), ejecutando (running), esperando (waiting), y terminado (terminated). Este campo es vital para la planificación y manejo de procesos del sistema operativo.
+	    
+	3. **Prioridad**: Algunos sistemas operativos utilizan prioridades para decidir el orden de ejecución de los procesos. Un proceso con una prioridad más alta generalmente será ejecutado antes que uno con prioridad más baja.
+	    
+	4. **Contador de Programa (PC - Program Counter)**: Almacena la dirección de la próxima instrucción que el proceso debe ejecutar. Es fundamental para la reanudación correcta del proceso después de una interrupción o cambio de contexto.
+	    
+	5. **Punteros a Segmentos de Memoria**: Estos incluyen punteros al código del programa, datos del programa y pila del proceso. Estos punteros son esenciales para asignar y gestionar la memoria que el proceso puede utilizar.
+	    
+	6. **Datos de Contexto**: Incluyen los valores de los registros del procesador en el momento en que el proceso fue interrumpido o cambió su estado. Esta información es crucial para poder reanudar la ejecución del proceso exactamente donde se dejó.
+	    
+	7. **Información de Estado de I/O**: Detalles sobre los archivos y dispositivos de entrada/salida que el proceso está utilizando, incluyendo punteros a buffers de datos, contadores de I/O y estados de las operaciones de I/O.
+	    
+	8. **Información de Auditoría**: Puede incluir detalles sobre el uso de recursos del proceso, como el tiempo de CPU consumido, cantidad de operaciones de entrada/salida realizadas, y otros registros utilizados para monitorizar y auditar el comportamiento del proceso.
+
+- ### Modelo de Estados de un Proceso
+
+- ### Espacio virtual de direcciones de un proceso
+	- Este modelo permite a cada proceso operar como si tuviera acceso a una gran cantidad de memoria continua y exclusiva, independientemente de la memoria física disponible realmente en el sistema.
+
+	- ### Concepto Básico
+		
+		El espacio virtual de direcciones es la vista de la memoria que un proceso tiene durante su ejecución. Este espacio es gestionado por el sistema operativo y se presenta al proceso como un rango contiguo de direcciones que comienza desde una dirección base (generalmente cero) hasta un límite máximo que puede ser varios gigabytes, dependiendo de la arquitectura del sistema y la configuración del sistema operativo.
+		
+		### Componentes del Espacio Virtual de Direcciones
+		
+		1. **Texto (Código)**: Esta sección contiene el código ejecutable del proceso. Es generalmente marcado como de solo lectura para prevenir que el proceso modifique su propio código.
+		    
+		2. **Datos**: Incluye variables globales y estáticas utilizadas por el programa. Esta área puede expandirse durante la ejecución del proceso a medida que se asignan y liberan variables.
+		    
+		3. **Heap (Montón)**: Es una región de memoria que se utiliza para la asignación dinámica de memoria durante la ejecución del proceso. El heap crece dinámicamente a medida que el proceso solicita más memoria para sus operaciones a través de llamadas como `malloc` en C o `new` en C++.
+		    
+		4. **Pila (Stack)**: Cada proceso tiene una pila que contiene el marco de la pila para las llamadas a funciones, incluyendo los parámetros de la función, las direcciones de retorno y las variables locales. La pila crece y se encoge dinámicamente con cada llamada y retorno de función.
+
+
+# 3. Planificadores
 
 **FIFO:** Entre cada cambio de proceso hay que considerar el tiempo de planificación del kernel el cual en ilustraciones suele ser omitido.
 
