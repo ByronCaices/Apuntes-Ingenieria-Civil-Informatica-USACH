@@ -109,3 +109,20 @@ For every edge pixel:
 			a = ...
 			
 ```
+# s7-cat1
+asincrona
+
+# s7-cat2 02.05
+
+##  Descriptores de características locales
+### Local Descriptors
+- Recuperación de imágenes por contenido: Se toma una foto, se toman los puntos de interés (cat1) y describe los puntos alrededor del punto de interés y con esos trozos o mini imágenes
+	- Detectar keypoints
+	- Definir una region local _cómo?_
+	- Normalizar contenido de la región _cómo?_
+	- Describir la región _cómo?_
+	- Matching de descriptores
+- ¿Como representar las vecindades?
+	- Histograma de gradientes HoG (H de 8 direcciones): Arreglo de 8 celdas
+	- R: Se saca imagen binaria de A considerando solo los pixels que se encuentren en la direccion 1 -22.5 a 22.5
+
