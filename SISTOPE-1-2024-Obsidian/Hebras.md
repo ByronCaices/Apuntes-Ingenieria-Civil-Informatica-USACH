@@ -109,7 +109,7 @@ Una asignación simple del tipo `i = 0` es atómica
  - La sección crítica se ejecuta como si fuera atómica, tiene todo el tiempo del mundo para ingresar a la sección critica, ejecutar todas sus tareas y luego salir de la sección critica y las demás hebras se verán obligadas a esperar
  - Puede producir inanición
  - No sirve en multiprocesadores
- - 
+ - Si hay un IO en la SC no se le podrá avisar al programa que e lO ha terminado
 
 #### Solución por hardware 2:
 ##### testset()
@@ -137,9 +137,146 @@ void main() {
 	bolt = 0;
 	parbegin(T(1), T(2),...,T(n));
 }
+```
+No produce deadlock pero sí puede producir inanición
+%binarizar, calcular houge, obtener lineas, calcular centro del objeto
 
 
+#### Solución por hardware 3: 
+
+##### exchange()
+
+- Mientras la llave no sea la que me sirva entonces la cambio con bolt
 
 ```
-%binarizar, calcular houge, obtener lineas, calcular centro del objeto
+void exchange(int a, int b) { 
+	int tmp; 
+	tmp = a; 
+	a = b; 
+	b = tmp;
+}
+
+T(i) {
+	int keyi;
+	while (true) {
+		keyi = 1; //ENTERSC de aqui
+		while (keyi != 0)
+			exhange(keyi, bolt); //busy-waiting ;;a aqui
+		SC();
+		exchange(keyi, bolt);
+		...
+	}
+}
+
+int bolt; // shared
+void main() {
+	bolt = 0;
+	parbegin(T(1), T(2),...,T(n));
+}
+
+```
+- EnterSC de esta solución lamentablemente no es atómico
+- ¿Esta solucion satisface el progreso? Cuando una hebra comienza su enter "yo ahora estoy compitiendo por entrar a la SC" si la SC esta vacia ella deberia ser capaz de entrar (bolt = 0) entra a enterSC, toma key=1 y repentinamente hay un CC y ahora entra otra hebra y tambien toma el key=1
+- Ahora hay dos hebras con key=1. Sí satisface el progreso pero puede producir inanición. 
+
+En general las soluciones por hardware generan un uso del procesador innecesario (spinlock) además de la posibilidad de producir inanición
+
+#### Solución por software 1:
+
+```
+int turno;
+T0 {
+	while (true) {
+		while (turno != 0);
+		SC();
+		turno = 1;
+	}
+}
+
+T1 {
+	while (true) {
+		while (turno != 1);
+		SC();
+		turno = 0;
+	}
+}
+
+void main() {
+	turno = 0;
+	parbegin(T0, T1);
+}
+
+```
+- Garantiza exclusión mutua. No es posible que dos hebras estén en la sección crítica ya que el turno es cero o es uno.
+- Si quiero demostrar que algo no funciona doy un ejemplo, si quiero demostrar que algo funciona debe ser una demostración formal.
+- No hay concurrencia, es una ejecución secuencial
+
+#### Solución por software 2:
+```
+boolean flag[2];
+T0 {
+	while (TRUE) {
+		while (flag[1]);
+		flag[0] = true; 
+		SC(); 
+		flag[0] = FALSE;
+	} 
+}
+
+T1 {
+	while (TRUE) {
+		while (flag[0]);
+		flag[1] = true; 
+		SC(); 
+		flag[1] = FALSE;
+	} 
+}
+
+void main() {
+	flag[0] = flag[1] = FALSE;
+	parbegin(T0, T1);
+}
+```
+
+- Satisface progreso pero no el req de EM
+- Suben su bandera demasiado tarde
+
+#### Solución por software 3:
+
+```
+
+```
+
+#### Solución de Peterson para dos Hebras:
+
+- Hasta ahora todas son busy-waiting
+- Satisface todos los requerimientos
+- Yo quiero entrar (subo mi bandera) pero le doy el paso a la otra, mientras la otra quiere entra y sea el turno de la otra, la otra puede entrar de lo contrario si no se cumplen esas dos condiciones yo puedo entrar. 
+- **¿Cómo demostrar que satisface EM?**
+	- Demostración por contradicción: 
+		- Hipótesis: No satisface la EM
+			- Entonces la h0 está en SC y la h1 está en SC
+			- Si ambas están en SC entonces el while anterior fue false para ambas hebras.
+			- t0: `( flag[1]==T && turno==1 )` es false
+			- ``
+			- t1: `( flag[0]==T && turno==0 )`es false
+
+flag[0] y flag[1] deben ser verdaderas y por ende turno=0 y turno=1 lo cual es una contradicción entonces decir "No satisface a la EM" es falso por tanto sí satisface la EM
+
+![[photo_5037722340577881390_y.jpg]]
+
+panaderia saltado
+### Solución de S0:
+
+#### Semáforos y Locks:
+
+###### wait(s): 
+- decrementa el semáforo, si el valor resultante es negativo, el proceso se bloquea; sino, continúa suejecución.
+###### signal(s):
+- incrementa el semáforo, si el valor resultante es menor o igual que cero, entonces se despierta un proceso que fue bloqueado por wait, puede despertar una hebra
+
+el SO garantiza que wait y signal se ejecuten de manera atómica
+#### Semáforo binario o mutex
+
+
 
