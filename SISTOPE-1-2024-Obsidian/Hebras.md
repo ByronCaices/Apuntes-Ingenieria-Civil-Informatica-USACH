@@ -279,4 +279,51 @@ el SO garantiza que wait y signal se ejecuten de manera atómica
 #### Semáforo binario o mutex
 
 
+## El problema del productor/consumidor
 
+El problema es la sincronización
+
+
+Buffer circular/finito: 
+
+in = (in + 1)%n
+
+in: posición donde ingresar el próximo item
+out: Posicion del proximo elemento a consumir
+
+buffer infinito solución correcta foto 28/05 13:57 (ejemplo en libro igualmente)
+
+Semaforo contador 
+
+buffer circular: full y empty son semaforos de comunicación y s es un semáforo de EM foto sacada luego de la anterior
+
+## Problema de los filósofos comensales
+
+Produce deadlock pero satisface pero satisface el requerimiento de coordinación correcta(?)
+
+
+## Problema de los lectores/escritores
+
+Pueden acceder a un recurso todos los lectores que quieran pero no pueden entrar multiples escritores ya que puede desencadenar ¿una CC? y tampoco si hay un escritor con el recurso puede acceder a este un lector y viceversa.
+
+En la primera solución lectores tienen prioridad y puede generar inanición de lectores
+
+#### Solución de libro
+- Escritores con prioridad
+
+
+## Problema típico con semáforos
+- No implementan la solución al problema de la EM
+- Esto lo vienen a solucionar los monitores
+- 
+HW,SW,SO,LENG
+
+## Monitores
+4 condiciones: EM, Deadlock, Inanicion, Progreso
+- Garantiza EM
+- Monitor es un módulo de software, es una propiedad/ objeto del lenguaje de programación. Va a encapsular mi aplicación
+- 
+
+
+
+Qué pasa si pongo un semáforo dentro de un monitor???????
