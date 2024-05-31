@@ -327,3 +327,26 @@ HW,SW,SO,LENG
 
 
 Qué pasa si pongo un semáforo dentro de un monitor???????
+
+## Sincronización con hebras POSIX
+
+### Mutex
+- Provee el mismo servicio que un semáforo binario
+
+trylock: intentar bloquear el mutex
+```
+pthread_mutex_t m;
+pthread_mutex_init(&m, NULL); //importante inicializarlo donde en null van los atributos por defecto
+pthread_mutex_lock(m); //entersc()
+SC(); //todos los que hagan lock quedan bloqueados en FIFO
+pthread_mutex_unlock(m); //exitsc()
+```
+¿ Qué sucedería si una hebra se bloquea dentro de una SC?
+Una VC permite que una hebra se bloquee dentro de una seccion critica y al mismo tiempo libere la SC
+
+Signal despierta a una hebra que este durmiendo pero no abre el mutex, el wait abre el mutex y bloquea(duerne) la hebra que esta haciendo el wait
+
+broadcast de una variable de condicion que es un signal a todas las hebras
+
+# Deadlock e inanicion
+
