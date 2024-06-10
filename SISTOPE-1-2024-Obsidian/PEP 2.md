@@ -1,6 +1,55 @@
-#
-#
+# Hebras
+## Elementos de una hebra:
+- Estado de ejecución
+- Un contexto de hebra: Se almacena cuando no está en ejecución.
+- Una pila/stack de ejecución
+- Identificador de hebra
+- Acceso a datos globales y recursos del proceso al que pertenece
+- En un entorno multihebra hay un un PCB y un EVD asociado al proceso pero ahora hay varios Stacks separados para cada hebra así como un TCB (thread control block) que contiene valores referentes al estado de la hebra (como la prioridad)
+
+## Beneficios de las hebras:
+- Demora menos en crear y eliminar que un proceso
+- Demora menos hacer un cambio de contexto entre hebras de un mismo proceso que entre dos procesos
+- Ya que las hebras de un proceso comparten memoria y archivos, ellas se pueden comunicar sin necesidad de invocar al kernel
+- Permite ejecución paralela en multiprocesadores
+
+
+## Hebras a nivel de usuario y de kernel
+
+
+### ULT
+#### Ventajas ULT sobre KLT
+- Cambio de hebra no requiere privilegios de kernel: Gestión de hilos es a través de librerías de manejo de hebras.
+- La planificación puede especificarse por parte de la aplicación.
+- Pueden ser implementadas en cualquier SO.
+#### Desventajas de ULT
+- Cuando un ULT realiza una llamada al sistema, no solo se bloquea ese hilo, sino que se bloquean todos los hilos del proceso.
+- En una estrategia ULT pura, una aplicación multihilo no puede sacar ventaja del multiproceso
+### KLT
+- El núcleo puede planificar simultáneamente múltiples hebras de un solo proceso en múltiples procesadores
+- Si se bloquea una hebra de proceso, el núcleo puede planificar otra hebra del mismo proceso
+- **La principal desventaja de un KLT es que la transferencia de control entre hebras de un mismo proceso requiere cambio de modo**
+- Si no usa una api/biblioteca estandar los programas son menos portables entre SO's
+
+## Symmetric Multiprocessing
+- Conjunto de procesadores comparten un mismo bus para acceder a memoria, I/O devices, etc pero cada uno tiene su cache
+- SO puede correr en cualquiera de los procesadores
+- SO puede asignar  hebras o procesos a cualquiera de los procesadores
+- SO puede correr paralelamente en los procesadores
+- SMP + Multihebras -> PARALELISMO
+
+
 # Concurrencia y sincronización
+
+- **La concurrencia abarca aspectos como:**
+	- Comunicación entre procesos
+	- Compartición/Competencia por recursos
+	- Sincronización de actividades de múltiples procesos y la reserva de tiempo de procesador para los procesos.
+- Multiprogramación: Gestión de múltiples procesos dentro de un sistema monoprocesador
+- Multiprocesamiento: Gestión de múltiples procesos dentro de un multiprocesador
+- Hay problemas de sincronización tanto en sistemas multiprocesadores como en monoprocesadores
+
+
 -  Problemas de sincronización pueden ocurrir tanto en multi y mono procesador
 ```
 typedef struct list {
