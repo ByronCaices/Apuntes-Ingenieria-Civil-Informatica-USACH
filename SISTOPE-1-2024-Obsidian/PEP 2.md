@@ -49,6 +49,14 @@
 - Multiprocesamiento: Gestión de múltiples procesos dentro de un multiprocesador
 - Hay problemas de sincronización tanto en sistemas multiprocesadores como en monoprocesadores
 
+## Palabras clave:
+- **Sección crítica:** Sección dentro de un proceso que requiere acceso a recursos compartidos y que no puede ser ejecutada mientras otro proceso este en una sección de código correspondiente
+- **Deadlock:** Situación en la cual dos o más proceso son incapaces de actuar porque cada uno esta esperando que alguno de los otros haga algo.
+- **Círculo Vicioso(livelock):** Situación en la cual dos o más procesos cambian continuamente su estado en respuesta a cambios en los otros procesos, sin realizar ningún trabajo útil.
+- **Exclusión Mutua:** Requisito de que cuando un proceso esté en una SC que accede a recursos compartidos , ningún otro proceso pueda estar en una sección crítica que acceda a ninguno de esos recursos compartidos.
+- **Condición de carrera:** Situación en la cual múltiples hebras leen y escriben un dato compartido y el resultado final depende de la coordinación relativa de sus ejecuciones.
+- **Inanición:** Situación en la cual un proceso preparado para avanzar es evitado indefinidamente por el planificador; aunque es capaz de avanzar, nunca se le escoge.
+
 
 -  Problemas de sincronización pueden ocurrir tanto en multi y mono procesador
 ```
@@ -71,30 +79,31 @@ void insert(int item) {
 	
 }
 ```
-Función es correcta si no tuviera multithread 
+	Función es correcta si no tuviera multithread
 
-Cuando dos hebras 
-#### Condición de carrera: 
-Competencia entre hebras y el resultado de estas acciones que realizan depende del orden en que se ejecuten las hebras.
-	
+## Condición de carrera: 
+
+- Competencia entre hebras por escribir un resultado a tal punto de que el resultado final de las acciones que realizan depende del orden en que se ejecuten las instrucciones de cada hebra.
+- Una CC siempre representa un error potencial de concurrencia
+- Revisar apendice A del libro
+
 	"En mi código hay tal condición de carrera"
-#### Sincronización: 
+#### Sincronización:
 Método o protocolo para que se acceda de forma segura a los datos
 
-#### Sección crítica:
-Trozo de código ejecutado por múltiples hebras en el cual está la condición de carrera (se accede a datos compartidos y al menos una de las hebras escribe sobre los datos)
-Suele ser un código no atómico compuesto de muchas interrupciones
+## Sección crítica:
 
-- **No hay SC si:**
-	- Ninguna hebra modifica los datos (hacer write)
-	- Si no hay recursos compartidos
-	- Si el proceso es monohebra
+- Trozo de código ejecutado por múltiples hebras en el cual está la condición de carrera (se accede a datos compartidos y al menos una de las hebras escribe sobre los datos)
+- Suele ser un código no atómico compuesto de muchas interrupciones
+### No hay SC si:
+- Ninguna hebra modifica los datos (hacer write)
+- Si no hay recursos compartidos
+- Si el proceso es monohebra
 
 _Cual es la SC en la función insert?_
 
-#### Exclusión Mutua
+## Exclusión Mutua
 Requerimiento sobre una SC que dice que sólo una hebra puede estar ejecutando dicha SC.
-
 ```
 // SC
 void pop() {
@@ -112,6 +121,9 @@ void push(int item) {
 }
 ```
 La EM dice si hay una hebra que esta en pop no puede haber otra en push y viceversa
+
+### Requerimientos para la EM
+1. Exclusión Mutua:  Debe hacerse cumplir: sólo se permite un proceso al tiempo dentro de su sección crítica, de entre todos los procesos que tienen secciones criticas para el mismo recurso u objeto compartido
 
 #### Modelo de Concurrencia
 
