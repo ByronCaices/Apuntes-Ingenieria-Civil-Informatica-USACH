@@ -1,7 +1,7 @@
 
 # Trabajo
 
-el trabajo total realizado sobre una partícula por todas las fuerzas que actúan sobre ella es igual al cambio en su energía cinética: una cantidad relacionada con la rapidez de la partícula.
+El trabajo total realizado sobre una partícula por todas las fuerzas que actúan sobre ella es igual al cambio en su energía cinética: una cantidad relacionada con la rapidez de la partícula.
 
 Definimos el trabajo W (no confundir con la fuerza peso w) realizado por esta fuerza constante en dichas condiciones como el producto de la magnitud F de la fuerza y la magnitud s del desplazamiento:
 
@@ -9,7 +9,6 @@ Definimos el trabajo W (no confundir con la fuerza peso w) realizado por esta fu
 
 ## Ejemplo fuerza con inclinación $\phi$ respecto al desplazamiento
 
-¿y si la persona hubiera empujado con un ángulo f con respecto al desplazamiento del auto (figura 6.3)?
 
 $$F = cos \phi $$
 $$W = F \cdot d \text{   }[J]$$
@@ -17,10 +16,12 @@ $$W = F \cdot d \text{   }[J]$$
 ## Trabajo negativo, positivo o cero
 
 ![[Pasted image 20240710164415.png]]
-Hay muchas situaciones donde actúan fuerzas pero no realizan trabajo. Quizás usted piense que “cuesta trabajo” sostener una barra de halterofilia inmóvil en el aire durante cinco minutos (figura 6.5); pero en realidad no se está realizando trabajo sobre la barra porque no hay desplazamiento. Nos cansamos porque las componentes de las fibras musculares de los brazos realizan trabajo al contraerse y relajarse continuamente. Sin embargo, se trata de trabajo efectuado por una parte del brazo que ejerce fuerza sobre otra, no sobre la barra.
+Hay muchas situaciones donde actúan fuerzas pero no realizan trabajo. Quizás usted piense que “cuesta trabajo” sostener una barra de halterofilia inmóvil en el aire durante cinco minutos (figura 6.5); pero en realidad no se está realizando trabajo sobre la barra porque no hay desplazamiento. Nos cansamos porque las componentes de las fibras musculares de los brazos realizan trabajo al contraerse y relajarse continuamente. Sin embargo, se trata de trabajo efectuado por una parte del brazo que ejerce fuerza sobre otra, no sobre la barra.
 ![[Pasted image 20240710171405.png]]
 
-Cuando un halterófilo (levantador de pesas) baja una barra como en la figura 6.6a, sus manos y la barra se mueven juntas con el mismo desplazamiento La barra ejerce una fuerza barra sobre manos sobre sus manos en la misma dirección que el desplazamiento de éstas, así que el trabajo realizado por la barra sobre sus manos es positivo (figura 6.6b). Sin embargo, por la tercera ley de Newton, las manos del halterófilo ejerce una fuerza igual y opuesta manos sobre barra 5 2 barra sobre manos sobre la barra (figura 6.6c). Esta fuerza, que evita que la barra se estrelle contra el piso, actúa opuesta al desplazamiento de la barra. Por lo tanto, el trabajo realizado por sus manos sobre la barra es negativo. Puesto que las manos del halterófilo y la barra tienen el mismo desplazamiento, el trabajo realizado por sus manos sobre la barra es justo el negativo del realizado por la barra sobre sus manos. En general, cuando un cuerpo realiza trabajo negativo sobre otro cuerpo, éste realiza una cantidad igual de trabajo positivo sobre el primero
+Cuando un halterófilo (levantador de pesas) baja una barra como en la figura 6.6a, sus manos y la barra se mueven juntas con el mismo desplazamiento La barra ejerce una fuerza barra sobre manos sobre sus manos en la misma dirección que el desplazamiento de éstas, así que el trabajo realizado por la barra sobre sus manos es positivo (figura 6.6b). 
+
+Sin embargo, por la tercera ley de Newton, las manos del halterófilo ejerce una fuerza igual y opuesta. Esta fuerza, que evita que la barra se estrelle contra el piso, actúa opuesta al desplazamiento de la barra. Por lo tanto, el trabajo realizado por sus manos sobre la barra es negativo. Puesto que las manos del halterófilo y la barra tienen el mismo desplazamiento, el trabajo realizado por sus manos sobre la barra es justo el negativo del realizado por la barra sobre sus manos. En general, cuando un cuerpo realiza trabajo negativo sobre otro cuerpo, éste realiza una cantidad igual de trabajo positivo sobre el primero
 
 trabajo total: El trabajo total Wtot realizado por todas las fuerzas sobre el trineo es la suma algebraica del trabajo realizado por cada fuerza individual:
 
@@ -35,6 +36,8 @@ Veamos otra vez el trineo de la figura 6.7 y las cifras finales del ejemplo 6.2
 ![[Pasted image 20240711001411.png]]
 la energía cinética de una partícula es igual al trabajo que puede efectuar una partícula mientras se detiene. Por ello, hacemos hacia atrás la mano y el brazo cuando atrapamos una pelota. Al detenerse la pelota, realiza una cantidad de trabajo (fuerza por distancia) sobre la mano igual a la energía cinética inicial de la pelota. Al hacer la mano hacia atrás, aumentamos la distancia donde actúa la fuerza y así reducimos la fuerza ejercida sobre nuestra mano
 Resumen
+
+
 
 **1. Teorema del Trabajo y la Energía:**
 
@@ -76,7 +79,9 @@ Resumen
 - **Definición:** Es el trabajo realizado por fuerzas no conservativas, como la fricción. Depende de la trayectoria y generalmente disipa energía mecánica.
 - **Ecuación:** W_no conservativo = ΔEm - W_conservativo
 
-La energía es una propiedad fundamental de la materia y se manifiesta de diversas formas. En términos generales, la energía es la capacidad de un sistema para realizar trabajo o producir cambios.
+
+# Energía
+La energía es una propiedad fundamental de la materia y se manifiesta de diversas formas. En términos generales,**la energía es la capacidad de un sistema para realizar trabajo o producir cambios.**
 
 **Características principales:**
 
@@ -89,12 +94,11 @@ La energía es una propiedad fundamental de la materia y se manifiesta de divers
 
 - **Energía cinética:** Un automóvil en movimiento, una persona corriendo, el viento.
 - **Energía potencial gravitatoria:** Un objeto elevado, agua almacenada en una presa.
-- **Energía potencial elástica:** Un resorte comprimido, una banda elástica estirada.
-- **Energía térmica:** El calor del sol, el calor de una estufa, el vapor de agua.
-- **Energía eléctrica:** La corriente eléctrica que alimenta nuestros hogares, la energía almacenada en una batería.
-- **Energía química:** La energía almacenada en los alimentos, la energía liberada en una reacción química.
-- **Energía radiante:** La luz del sol, la luz de una bombilla, las ondas de radio.
 
 **Importancia:**
 
 La energía es esencial para la vida y para el desarrollo de la sociedad. Se utiliza para realizar diversas actividades, como generar electricidad, mover vehículos, calentar hogares, cocinar alimentos, producir bienes y servicios, entre muchas otras. El estudio y la comprensión de la energía son fundamentales para abordar los desafíos energéticos actuales y futuros, como la búsqueda de fuentes de energía más limpias y sostenibles.
+
+![[Pasted image 20240711112122.png]]
+
+![[Pasted image 20240711112131.png]]![[Pasted image 20240711124111.png]]
