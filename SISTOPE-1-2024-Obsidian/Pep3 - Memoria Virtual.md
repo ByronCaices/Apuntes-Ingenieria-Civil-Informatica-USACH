@@ -59,4 +59,40 @@ Preguntas para final de la clase
 - Genera fragmentación interna
 - ![[Pasted image 20240730145622.png]]
 - ![[Pasted image 20240730145633.png]]
+
+# Tipos de direcciones
+
+cuando nos referimos a memoria virtual no hablamos de un espacio de almacenamiento, más bien de un sistema de redireccionamiento.
+
+## 1. Lógica/Virtual
+
+## 2. Física
+
+## 3. Relativa
+
+# Paginación
+
+- Se parece a particionamiento fijo
+- La memoria física se divide en bloques de igual tamaño llamados **marcos** (en MV se llaman **páginas**)
+- El SO mantiene una tabla de páginas para cada proceso, que mapea desde pagina virtual a número de marco en memoria principal
+- Permite que el proceso no necesariamente se tenga que cargar completo y permite que se pueda cargar discontinuamente
+- Tabla de páginas del proceso D guarda el número de marco en el que quedó
+	- bit de control permite saber si la página está cargada o no en un marco de mem principal
+
+## Direccionamiento con paginación
+
+### Logical Addres
+
+LA = VPN + OFFSET
+### Virtual Page Number
+### offset: 
+- Desplazamiento a partir del inicio de cada página
+
+
+# Segmentación
+
+- Se parece a particionamiento dinámico
+- tabla de segmentación: guarda direcciones físicas donde comienza el segmento
 - 
+
+# Carga y enlazamiento de programa

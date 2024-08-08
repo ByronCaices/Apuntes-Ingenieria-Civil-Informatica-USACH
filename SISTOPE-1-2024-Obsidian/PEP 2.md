@@ -103,7 +103,10 @@ Método o protocolo para que se acceda de forma segura a los datos
 _Cual es la SC en la función insert?_
 
 ## Exclusión Mutua
-Requerimiento sobre una SC que dice que sólo una hebra puede estar ejecutando dicha SC.
+- Requerimiento sobre una SC que dice que sólo una hebra puede estar ejecutando dicha SC.
+### La aplicación de EM crea dos problemas:
+- Deadlock: Por ejemplo, considere dos procesos, P1 y P2, y dos recursos, R1 y R2. Suponga que cada proceso necesita acceder a ambos recursos para realizar parte de su función. Entonces es posible encontrarse la siguiente situación: el sistema operativo asigna R1 a P2, y R2 a P1. Cada proceso está esperando por uno de los dos recursos. Ninguno liberará el recurso que ya posee hasta haber conseguido el otro recurso y realizado la función que requiere ambos recursos. Los dos procesos están interbloqueados
+- Inanición: Suponga que tres procesos (P1, P2, P3) requieren todos accesos periódicos al recurso R. Considere la situación en la cual P1 está en posesión del recurso y P2 y P3 están ambos retenidos, esperando por ese recurso. Cuando P1 termine su sección crítica, debería permitírsele acceso a R a P2 o P3. Asúmase que el sistema operativo le concede acceso a P3 y que P1 solicita acceso otra vez antes de completar su sección crítica. Si el sistema operativo le concede acceso a P1 después de que P3 haya terminado, y posteriormente concede alternativamente acceso a P1 y a P3, entonces a P2 puede denegársele indefinidamente el acceso al recurso, aunque no suceda un interbloqueo.
 ```
 // SC
 void pop() {
@@ -124,8 +127,15 @@ La EM dice si hay una hebra que esta en pop no puede haber otra en push y viceve
 
 ### Requerimientos para la EM
 1. Exclusión Mutua:  Debe hacerse cumplir: sólo se permite un proceso al tiempo dentro de su sección crítica, de entre todos los procesos que tienen secciones criticas para el mismo recurso u objeto compartido
+2. Sin deadlock: todas las hebras quedan ejecutando enterSC() indefinidamente
+3. Sin inanición: Una hebra entra en inanición si nunca logra entrar a su SC
+4. Progreso: Si una hebra ejecuta enterSC() y ninguna otra está en la SC entonces se le debe permitir entrar a la SC
+5. Notas:
+	1. Una hebra puede tener mas de una SC
+	2. Deadlock $\rightarrow$ Inanición pero no así al revés
+	3. No se debe realizar suposiciones sobre la velocidad relativa y orden de ejecución de las hebras
 
-#### Modelo de Concurrencia
+## Modelo de Concurrencia
 
 ```
 Process(i) {
@@ -142,9 +152,7 @@ Process(i) {
 ```
 cuando la puerta esta cerrada la hebra invasora se queda 
 
-#### Requerimientos para una solución correcta de EM
-
-#### Locks
+### Locks
 
 #### Atomicidad
 - Una operación es atómica si es que no puede dividirse en partes. Se ejecuta completamente o no se ejecuta y no puede ser interrumpida
@@ -175,6 +183,11 @@ Una asignación simple del tipo `i = 0` es atómica
 #### Solución por hardware 2:
 ##### testset()
 - Instrucciones que se realizan/ejecutan de forma atómica
+- Se inicializa el cerrojo (bolt) en cero
+- La primera hebra en hacer testset setea bolt=1 y bloquea el acceso a las demás hebras
+- cuando la hebra que entró a la sc sale de esta, setea bolt=0 permitiendo que las demás hagan testset y logren entrar
+- Mientras bolt=1 quedan en busy-waiting
+- No produce deadlock pero sí puede producir inanición
 ```
 boolean testset(int &i) { 
 	if (i == 0) {
@@ -199,8 +212,8 @@ void main() {
 	parbegin(T(1), T(2),...,T(n));
 }
 ```
-No produce deadlock pero sí puede producir inanición
-%binarizar, calcular houge, obtener lineas, calcular centro del objeto
+
+
 
 
 #### Solución por hardware 3: 
@@ -327,10 +340,14 @@ flag[0] y flag[1] deben ser verdaderas y por ende turno=0 y turno=1 lo cual es u
 ![[photo_5037722340577881390_y.jpg]]
 
 panaderia saltado
-### Solución de S0:
+#### Solución de S0:
 
-#### Semáforos y Locks:
+### Semáforos y Locks:
+El principio fundamental es éste: dos o más procesos pueden cooperar por medio de simples señales, tales que un proceso pueda ser obligado a parar en un lugar específico hasta que haya recibido una señal específica
 
+1. Un semáforo puede ser inicializado a un valor no negativo. 
+2. La operación semWait decrementa el valor del semáforo. **Si el valor pasa a ser negativo, entonces el proceso que está ejecutando semWait se bloquea.** En otro caso, el proceso continúa su ejecución. 
+3. La operación semSignal incrementa el valor del semáforo. **Si el valor es menor o igual que cero, entonces se desbloquea uno de los procesos bloqueados** en la operación semWait.
 ###### wait(s): 
 - decrementa el semáforo, si el valor resultante es negativo, el proceso se bloquea; sino, continúa suejecución.
 ###### signal(s):
@@ -339,8 +356,8 @@ panaderia saltado
 el SO garantiza que wait y signal se ejecuten de manera atómica
 #### Semáforo binario o mutex
 
-
-## El problema del productor/consumidor
+### Problemas
+#### El problema del productor/consumidor
 
 El problema es la sincronización
 
@@ -358,16 +375,21 @@ Semaforo contador
 
 buffer circular: full y empty son semaforos de comunicación y s es un semáforo de EM foto sacada luego de la anterior
 
-## Problema de los filósofos comensales
+#### Problema de los filósofos comensales
 
 Produce deadlock pero satisface pero satisface el requerimiento de coordinación correcta(?)
 
 
-## Problema de los lectores/escritores
+#### Problema de los lectores/escritores
 
 Pueden acceder a un recurso todos los lectores que quieran pero no pueden entrar multiples escritores ya que puede desencadenar ¿una CC? y tampoco si hay un escritor con el recurso puede acceder a este un lector y viceversa.
 
 En la primera solución lectores tienen prioridad y puede generar inanición de lectores
+
+El problema lectores/escritores se define como sigue: Hay un área de datos compartida entre un número de procesos. El área de datos puede ser un fichero, un bloque de memoria principal o incluso un banco de registros del procesador. Hay un número de procesos que sólo leen del área de datos (lectores) y otro número que sólo escriben en el área de datos (escritores). Las siguientes condiciones deben satisfacerse. 
+1. Cualquier número de lectores pueden leer del fichero simultáneamente.
+2. Sólo un escritor al tiempo puede escribir en el fichero. 
+3. Si un escritor está escribiendo en el fichero ningún lector puede leerlo.
 
 #### Solución de libro
 - Escritores con prioridad
@@ -409,5 +431,38 @@ Signal despierta a una hebra que este durmiendo pero no abre el mutex, el wait a
 
 broadcast de una variable de condicion que es un signal a todas las hebras
 
-# Deadlock e inanicion
+# Deadlock e inanición
 
+## Recursos Reutilizables/Reusables
+- Es aquél que no se destruye cuando se usa, como un canal de I/O o una región de memoria
+## Recursos Consumibles
+- Un  recurso consumible es aquél que se destruye cuando lo adquiere un proceso; algunos ejemplos son los mensajes y la información almacenada en buffers de I/O
+
+## Condiciones necesarias para deadlock
+
+- **Exclusión Mutua:** Solo un proceso puede utilizar un recurso en cada momento. Ningún proceso puede acceder a  una unidad de un recurso que se ha asignado a otro proceso
+- **Hold and Wait:** Un proceso puede mantener los recursos asignados mientras espera la asignación de otros recursos
+- **Sin expropiación:** No se puede forzar la expropiación de un recurso a un proceso que lo posee
+
+Estas condiciones **pueden** llevar a deadlock pero no son suficientes:
+- **Espera Circular:** Cadena cerrada de procesos tal que cada proceso mantiene al menos un recurso que es solicitado por otro proceso en la cadena
+
+## Prevención de deadlock
+
+### Método indirecto:
+- Prevenir o evitar que alguna de las 3 condiciones necesarias para deadlock ocurran
+### Método directo:
+-  Garantizar que nunca se satisfaga la condición de espera circular
+
+## Deadlock Avoidance
+
+- Se determina si la asignación de un recurso produciría o no una posibilidad de deadlock
+- Eficiente pero requiere conocer la secuencia total de requerimientos de todos los procesos
+- Permite las 3 condiciones necesarias pero niega la asignación de un recurso si dicha asignación podría llevar a producir deadlock
+- Puede denegar iniciar un proceso o denegar asignación de un recurso (banquero)
+
+### Algoritmo del banquero 
+Repasar en tablet
+
+
+![[Pasted image 20240808005843.png]]
