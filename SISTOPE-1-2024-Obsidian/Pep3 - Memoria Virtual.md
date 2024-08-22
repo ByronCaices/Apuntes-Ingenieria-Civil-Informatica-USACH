@@ -230,3 +230,52 @@ $$\text{Peso Tabla de Página} = \text{Cantidad de Bytes por Entrada } \cdot \te
 
 ## MV con Segmentación
 
+- Particiona la memoria virtual y física en segmentos de tamaño variable
+- Da soporte a la compartición entre procesos
+- Permite programas que se modifican o recompilan de forma independiente
+
+### Entrada de tabla de segmento
+
+$$P + M + Otros bits de control + Longitud + Dir Base segmento$$
+
+## MV Con Segmentación Paginada
+
+- Segmentos de tamaño variable con páginas de tamaño fijo
+- Dirección Virtual = $\#Segmento + \#Página + Offset$  
+- $\#Seg$ me indica donde inicia el segmento en dirección física
+- y con el $\#Pag$ conozco a cuál página del segmento quiero acceder
+- finalmente con el offset conozco el marco que debo consultar en memoria principal
+
+## Políticas de Memoria VIrtual
+
+### 1. Política de Recuperación/Fetch
+
+- Determina cuándo una página se trae a la memoria principal
+- Paginación bajo demanda: Una página se trae a memoria cuando se hace referencia una posición en dicha página
+- Prepaginación: Se traen varias páginas diferentes a las que ha causado el Page Fault. 
+
+### 2. Política de Ubicación
+
+- Determina en qué parte de la memoria real van a residir las porciones de la memoria de un proceso
+- Cuando se usa segmentación es importante ya que afecta la fragmentación externa
+- En paginación no es tan importante, pues la fragmentación sería la misma independiente del lugar donde se cargue
+
+### 3. Política de Reemplazo
+
+- Objetivo: Página que será reemplazada deberá tener la menor probabilidad de volver a referenciarse en un futuro
+- Bloqueo de marcos: es posible dejar marcos bloqueados para no reemplazar las páginas.
+#### Algoritmos de reemplazo
+
+##### 1. Óptimo
+
+- Se fija en el futuro, lo que hace que este algoritmo no sea posible implementar pues no se puede tener certeza de este
+- Tomará como reemplazo la página para la cual la siguiente referencia se encuentra más lejos
+
+##### 2. Least Recently Used (LRU)
+
+- Se fija en el pasado
+- Selecciona la página que **no** ha sido referenciada durante más tiempo
+##### 3. First In First Out (FIFO)
+
+- Se fija en los que ya están y ve el que lleva más tiempo, este, lo reemplaza.
+![[Pasted image 20240822094847.png]]
