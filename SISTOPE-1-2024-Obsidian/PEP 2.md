@@ -446,20 +446,36 @@ broadcast de una variable de condicion que es un signal a todas las hebras
 
 Estas condiciones **pueden** llevar a deadlock pero no son suficientes:
 - **Espera Circular:** Cadena cerrada de procesos tal que cada proceso mantiene al menos un recurso que es solicitado por otro proceso en la cadena
+La cuarta condición es, realmente, una consecuencia potencial de las tres primeras.
 
-## Prevención de deadlock
+## Estrategias para el tratamiento de deadlock
 
-### Método indirecto:
-- Prevenir o evitar que alguna de las 3 condiciones necesarias para deadlock ocurran
-### Método directo:
--  Garantizar que nunca se satisfaga la condición de espera circular
+### a. Prevención
+#### 1. Método indirecto
+- Impide la aparición de una de las 3 condiciones necesarias listadas previamente
+	- EM: EN general no puede eliminarse. Si el acceso a un recurso requiere EM el SO debe proporcionarlo.
+	- Hold and wait: Puede eliminarse estableciendo que un proceso debe solicitar al mismo tiempo todos sus recursos requeridos, bloqueandolo hasta que se le pueda conceder todos los que necesite.
+	- Sin desapropiación: Si un priceso mantiene varios recursos y se le deniega una posterior solicitud, ese proceso deberá liiberar los que ya tiene.
+#### 2. Método Directo
+- Impide que se produzca una espera circular
+	- Espera circular: 
 
-## Deadlock Avoidance
+- Uso ineficiente de recursos
+### b. Predicción Evitar (Avoidance)
+Permite las 3 condiciones necesarias pero toma decisiones razonables para asegurar de que nunca se alcanza el punto de deadlock. Se decide dinámicamente si la petición actual de reserva de un recurso podría potencialmente causar un deadlock **Requiere conocimiento de las futuras solicitudes de recursos del proceso**
 
-- Se determina si la asignación de un recurso produciría o no una posibilidad de deadlock
-- Eficiente pero requiere conocer la secuencia total de requerimientos de todos los procesos
-- Permite las 3 condiciones necesarias pero niega la asignación de un recurso si dicha asignación podría llevar a producir deadlock
-- Puede denegar iniciar un proceso o denegar asignación de un recurso (banquero)
+#### 1. No iniciar proceso
+No iniciar un proceso si sus demandas podrían llevar a DL
+#### 2. No conceder petición de recurso (BANQUERO)
+No conceder una petición de un recurso por parte de un proceso si esto implica un DL
+- Estado seguro: Hay al menos una **secuencia de asignación** de recursos a los procesos que no implica un DL
+- Estado inseguro: estado seguron't
+### c. Detección
+
+En contraste a las demás no limita el acceso a los recursos ni restringe las acciones de los procesos. Con la detección de DL los recursos pedido se conceden. Periódicamente el SO realiza un algoritmo que le permite detectar la condición de espera circulas descrita anteriormente.
+
+
+## Problema de los filósofos comensales
 
 ### Algoritmo del banquero 
 Repasar en tablet
