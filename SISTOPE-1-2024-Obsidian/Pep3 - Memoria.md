@@ -1,8 +1,4 @@
-
-
-
 # Gestión de memoria
-
 
 ## Requerimientos de un Sistema de Administración de Memoria
 
