@@ -6,7 +6,7 @@ El curso se basará en DAMA
 
 ## Definición y objetivos de las arquitectura de datos
 
-Data Owner: Dueño legal de los datos generalmente no posee conocimiento ténico
+Data Owner: Dueño legal de los datos generalmente no posee conocimiento técnico
 Data Steward: Posee conocimiento del negocio como por ejemplo donde se almacenan los datos
 
 Analista de Datos: 
